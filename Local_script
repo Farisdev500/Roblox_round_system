@@ -1,0 +1,53 @@
+local MIN_PLAYERS = 1
+local ROUND_TIME =  10
+
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local round_event = ReplicatedStorage:WaitForChild("round")
+local intermission_event = ReplicatedStorage:WaitForChild("intermission")
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+local gui = script.Parent
+local round_gui = gui:WaitForChild("round")                
+local intermission_gui = gui:WaitForChild("intermission") 
+local player_gui = gui:WaitForChild("Player")              
+
+
+
+intermission_event.OnClientEvent:Connect(function()
+	
+	round_gui.Visible = false
+	player_gui.Visible = false
+	intermission_gui.Visible = true
+	intermission_gui.Text = "Intermission"
+		
+	
+	
+end)
+
+round_event.OnClientEvent:Connect(function()
+	
+	intermission_gui.Visible = false
+	player_gui.Visible = false
+	round_gui.Visible = true
+	round_gui.Text = "time: "
+	for i = ROUND_TIME,1,-1 do
+		task.wait(1)
+		round_gui.Text = "time: " ..i
+	end
+		
+	
+end)
+
+while true do
+	if #Players:GetPlayers() >= MIN_PLAYERS then
+		player_gui.Visible = false 
+	else
+		player_gui.Visible = true
+	end
+	task.wait(1)
+end
